@@ -20,17 +20,20 @@ document.addEventListener("DOMContentLoaded", () => {
     if (Notification.permission === "granted") {
       const completedGoals = goals.filter((goal) => goal.completed).length;
       const remainingGoals = goals.length - completedGoals;
-
+  
       navigator.serviceWorker.ready.then((registration) => {
         registration.showNotification("Ramadan Goals Progress", {
           body: `✅ Completed: ${completedGoals}\n⏳ Remaining: ${remainingGoals}`,
           icon: "https://fav.farm/🌙",
           badge: "https://fav.farm/🌙",
-          requireInteraction: true, // Keeps the notification persistent
+          requireInteraction: true, // Keeps notification persistent
+          tag: "ramadan-goals", // Ensures only one notification is active at a time
+          renotify: true, // Replaces the previous notification with an update
         });
       });
     }
   }
+  
 
   const recommendedTasks = [
     "Pray Taraweeh",
