@@ -1,47 +1,57 @@
-# 🌙 Qoreeny : A Ramadan Accountability Buddy
+# 🌙 Qoreeny: My Ramadan Buddy
 
-## 📌 Overview
-Qoreeny is a simple web application designed to help users set and track their daily Ramadan goals. It includes a motivational message feature and ensures a smooth user experience with a name-based authentication system.
+This is a simple web app to help users track their Ramadan goals and stay motivated throughout the month. It allows users to add personal goals, choose from a list of recommended goal, track their completion, and receive notifications about their progress.
 
-## ✨ Features
-- **User Authentication**: Users enter their name to personalize their experience.
-- **Motivational Messages**: A new inspiring message is displayed daily.
-- **Goal Tracking**: Users can add, complete, and delete their Ramadan goals.
-- **Persistent Storage**: User data is saved in `localStorage` for continuity.
-- **Automatic Reset**: Goals reset at midnight to keep users on track.
+## Features
 
-## 🛠️ Technologies Used
-- **HTML** (Structure)
-- **CSS (Tailwind + DaisyUI)** (Styling)
-- **JavaScript** (Logic & Interactivity)
+- **Goal Management**: Add, complete, and delete goals.
+- **Persistent Storage**: Goals are saved in `localStorage`.
+- **Daily Reset**: Goals reset automatically at midnight.
+- **Recommended Tasks**: Users can choose from a list of suggested Ramadan tasks.
+- **Theming**: Toggle between light and dark mode.
+- **User Authentication**: Enter and save your name for a personalized experience.
+- **Push Notifications**: Get updated notifications on your Ramadan goal progress.
 
-## 🚀 How to Use
-1. Open the app in a web browser.
-2. Enter your name to access the main app.
-3. View the daily motivational message.
-4. Add and track your Ramadan goals.
-5. Come back daily to stay consistent!
+## Usage
 
-## 📂 Project Structure
-```
-├── index.html      # Main HTML file
-├── index3.js       # JavaScript logic for app functionality
-├── README.md       # Project documentation
-```
+1. Enter your name to start tracking goals.
+2. Add new goals manually or select from recommended tasks.
+3. Mark goals as completed and receive progress notifications.
+4. Change the theme using the theme toggle button.
+5. Goals reset automatically at midnight.
 
-## 🛠️ Setup & Running Locally
-To run the project locally:
-1. Clone the repository:
+### New Feature: Single Persistent Notification
+
+- The app now ensures only **one** notification is shown at a time.
+- When goals are updated, the previous notification is replaced with a new one.
+- The notification includes:
+  - ✅ Completed Goals
+  - ⏳ Remaining Goals
+- **Implementation Details:**
+  - Uses a `tag: "ramadan-goals"` to replace existing notifications.
+  - `renotify: true` ensures users are alerted again when the notification updates.
+
+### Service Worker Updates
+
+- Notifications will close when clicked.
+- Ensures seamless tracking without cluttering the notification panel.
+
+## Installation
+
+1. Clone this repository:
    ```sh
-   git clone https://github.com/yourusername/ramadan-qoreen.git
+   git clone https://github.com/your-repo/Qoreeny.git
    ```
-2. Open `index.html` in a browser.
+2. Navigate into the project directory:
+   ```sh
+   cd Qoreeny
+   ```
+3. Open `index.html` in a browser.
 
-## 💡 Future Improvements
-- 🔹 Dark/light mode toggle
-- 🔹 More advanced user authentication (e.g., Firebase)
-- 🔹 Cloud storage for cross-device tracking
+## Contributing
 
----
-### 🤲 May Allah accept your efforts this Ramadan! 🌙
+Feel free to fork the repository and submit pull requests!
 
+## License
+
+MIT License
