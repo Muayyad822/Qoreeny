@@ -1,4 +1,40 @@
 document.addEventListener("DOMContentLoaded", () => {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+            .then(() => console.log('Service Worker Registered'))
+            .catch(error => console.error('Service Worker Registration Failed:', error));
+    }
+    if (Notification.permission !== "granted") {
+        Notification.requestPermission().then(permission => {
+            if (permission === "granted") {
+                console.log("Notifications enabled!");
+            }
+        });
+    }
+    function saveAndRender() {
+        localStorage.setItem('goals', JSON.stringify(goals));
+        renderGoals();
+        updateNotification();
+    }
+    function updateNotification() {
+        if (Notification.permission === "granted") {
+            const completedGoals = goals.filter(goal => goal.completed).length;
+            const remainingGoals = goals.length - completedGoals;
+    
+            navigator.serviceWorker.ready.then(registration => {
+                registration.showNotification("Ramadan Goals Progress", {
+                    body: `✅ Completed: ${completedGoals}\n⏳ Remaining: ${remainingGoals}`,
+                    icon: "https://fav.farm/🌙",
+                    badge: "https://fav.farm/🌙",
+                    requireInteraction: true, // Keeps the notification persistent
+                });
+            });
+        }
+    }
+            
+
+
+
   const authContainer = document.getElementById("auth-container");
   const mainApp = document.getElementById("main-app");
   const nameInput = document.getElementById("name-input");
