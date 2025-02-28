@@ -40,7 +40,7 @@ This is a simple web app to help users track their Ramadan goals and stay motiva
 
 1. Clone this repository:
    ```sh
-   git clone https://github.com/your-repo/Qoreeny.git
+   git clone https://github.com/Muayyad822/Qoreeny.git
    ```
 2. Navigate into the project directory:
    ```sh
