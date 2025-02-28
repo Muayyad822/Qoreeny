@@ -1,95 +1,36 @@
 document.addEventListener("DOMContentLoaded", () => {
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js')
-            .then(() => console.log('Service Worker Registered'))
-            .catch(error => console.error('Service Worker Registration Failed:', error));
-    }
-    if (Notification.permission !== "granted") {
-        Notification.requestPermission().then(permission => {
-            if (permission === "granted") {
-                console.log("Notifications enabled!");
-            }
-        });
-    }
-    function saveAndRender() {
-        localStorage.setItem('goals', JSON.stringify(goals));
-        renderGoals();
-        updateNotification();
-    }
-    function updateNotification() {
-        if (Notification.permission === "granted") {
-            const completedGoals = goals.filter(goal => goal.completed).length;
-            const remainingGoals = goals.length - completedGoals;
-    
-            navigator.serviceWorker.ready.then(registration => {
-                registration.showNotification("Ramadan Goals Progress", {
-                    body: `✅ Completed: ${completedGoals}\n⏳ Remaining: ${remainingGoals}`,
-                    icon: "https://fav.farm/🌙",
-                    badge: "https://fav.farm/🌙",
-                    requireInteraction: true, // Keeps the notification persistent
-                });
-            });
-        }
-    }
-            
-
-
-
-  const authContainer = document.getElementById("auth-container");
-  const mainApp = document.getElementById("main-app");
-  const nameInput = document.getElementById("name-input");
-  const saveNameBtn = document.getElementById("save-name-btn");
-  const userGreeting = document.getElementById("user-greeting");
-  const goalInput = document.getElementById("goal-input");
-  const addGoalBtn = document.getElementById("add-goal-btn");
-  const goalsList = document.getElementById("goals-list");
-  const motivationalMessage = document.getElementById("motivation-text");
-  const themeToggle = document.getElementById("theme-toggle");
-  const body = document.body;
-
-  let goals = JSON.parse(localStorage.getItem("goals")) || [];
-  let userName = localStorage.getItem("userName");
-
-  let currentTheme = localStorage.getItem("theme") || "dark";
-  body.setAttribute("data-theme", currentTheme);
-  updateThemeStyles(currentTheme);
-
-  themeToggle.textContent = currentTheme === "dark" ? "🌞" : "🌙 ";
-
-  themeToggle.addEventListener("click", () => {
-    const newTheme =
-      body.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    body.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
-    themeToggle.textContent = newTheme === "dark" ? "🌞" : "🌙 ";
-    updateThemeStyles(newTheme);
-  });
-
-  function updateThemeStyles(theme) {
-    if (theme === "dark") {
-      body.classList.remove("bg-white", "text-black");
-      body.classList.add("bg-[#1e1e2e]", "text-white");
-    } else {
-      body.classList.remove("bg-[#1e1e2e]", "text-white");
-      body.classList.add("bg-white", "text-black");
-    }
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+      .register("service-worker.js")
+      .then(() => console.log("Service Worker Registered"))
+      .catch((error) =>
+        console.error("Service Worker Registration Failed:", error)
+      );
   }
 
-  const messages = [
-    "Allah does not burden a soul beyond that it can bear. (Quran 2:286)",
-    "The best among you are those who learn the Quran and teach it.",
-    "Whoever fasts Ramadan out of faith and hope for reward, his previous sins will be forgiven.",
-    "Verily, with hardship comes ease. (Quran 94:5)",
-    "The most beloved deed to Allah is the most regular and constant, even if it is small.",
-    "Keep striving! Small consistent deeds are beloved to Allah.",
-    "Recite the Quran today, for it will intercede for you on the Day of Judgment.",
-    "A little dua can change your whole day. Keep asking Allah!",
-    "Be kind. Even a smile is charity!",
-    "Every good deed will be multiplied this Ramadan. Keep going!",
-    "The last 10 nights are special—seek Laylatul Qadr with dedication!",
-    "Remember Allah, and He will remember you.",
-    "Set your goals, stay disciplined, and trust in Allah’s plan!",
-  ];
+  if (Notification.permission !== "granted") {
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        console.log("Notifications enabled!");
+      }
+    });
+  }
+
+  function updateNotification() {
+    if (Notification.permission === "granted") {
+      const completedGoals = goals.filter((goal) => goal.completed).length;
+      const remainingGoals = goals.length - completedGoals;
+
+      navigator.serviceWorker.ready.then((registration) => {
+        registration.showNotification("Ramadan Goals Progress", {
+          body: `✅ Completed: ${completedGoals}\n⏳ Remaining: ${remainingGoals}`,
+          icon: "https://fav.farm/🌙",
+          badge: "https://fav.farm/🌙",
+          requireInteraction: true, // Keeps the notification persistent
+        });
+      });
+    }
+  }
 
   const recommendedTasks = [
     "Pray Taraweeh",
@@ -132,18 +73,44 @@ document.addEventListener("DOMContentLoaded", () => {
     recommendedOverlay.classList.add("hidden");
   });
 
-  function loadMotivation() {
-    let today = new Date().toISOString().split("T")[0];
-    let savedMotivation = localStorage.getItem("dailyMotivation");
+  const authContainer = document.getElementById("auth-container");
+  const mainApp = document.getElementById("main-app");
+  const nameInput = document.getElementById("name-input");
+  const saveNameBtn = document.getElementById("save-name-btn");
+  const userGreeting = document.getElementById("user-greeting");
+  const goalInput = document.getElementById("goal-input");
+  const addGoalBtn = document.getElementById("add-goal-btn");
+  const goalsList = document.getElementById("goals-list");
+  const motivationalMessage = document.getElementById("motivation-text");
+  const themeToggle = document.getElementById("theme-toggle");
+  const body = document.body;
 
-    if (!savedMotivation || localStorage.getItem("motivationDate") !== today) {
-      let randomMessage = messages[Math.floor(Math.random() * messages.length)];
-      localStorage.setItem("dailyMotivation", randomMessage);
-      localStorage.setItem("motivationDate", today);
-      savedMotivation = randomMessage;
+  let goals = JSON.parse(localStorage.getItem("goals")) || [];
+  let userName = localStorage.getItem("userName");
+
+  let currentTheme = localStorage.getItem("theme") || "dark";
+  body.setAttribute("data-theme", currentTheme);
+  updateThemeStyles(currentTheme);
+
+  themeToggle.textContent = currentTheme === "dark" ? "🌞" : "🌙 ";
+
+  themeToggle.addEventListener("click", () => {
+    const newTheme =
+      body.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    body.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+    themeToggle.textContent = newTheme === "dark" ? "🌞" : "🌙 ";
+    updateThemeStyles(newTheme);
+  });
+
+  function updateThemeStyles(theme) {
+    if (theme === "dark") {
+      body.classList.remove("bg-white", "text-black");
+      body.classList.add("bg-[#1e1e2e]", "text-white");
+    } else {
+      body.classList.remove("bg-[#1e1e2e]", "text-white");
+      body.classList.add("bg-white", "text-black");
     }
-
-    motivationalMessage.textContent = savedMotivation;
   }
 
   function renderGoals() {
@@ -154,17 +121,23 @@ document.addEventListener("DOMContentLoaded", () => {
         "flex justify-between items-center p-2 bg-gray-600 rounded-lg text-white";
 
       li.innerHTML = `
-                <input type="checkbox" data-index="${index}" class="goal-checkbox" ${
+                  <input type="checkbox" data-index="${index}" class="goal-checkbox" ${
         goal.completed ? "checked" : ""
       }>
-                <span class="flex-grow ml-2 ${
-                  goal.completed ? "line-through text-gray-400" : ""
-                }">${goal.text}</span>
-                <button data-index="${index}" class="delete-btn btn btn-sm btn-error">✖</button>
-            `;
+                  <span class="flex-grow ml-2 ${
+                    goal.completed ? "line-through text-gray-400" : ""
+                  }">${goal.text}</span>
+                  <button data-index="${index}" class="delete-btn btn btn-sm btn-error">✖</button>
+              `;
 
       goalsList.appendChild(li);
     });
+  }
+
+  function saveAndRender() {
+    localStorage.setItem("goals", JSON.stringify(goals));
+    renderGoals();
+    updateNotification(); // Ensure notifications update when goals change
   }
 
   addGoalBtn.addEventListener("click", () => {
@@ -188,11 +161,6 @@ document.addEventListener("DOMContentLoaded", () => {
     saveAndRender();
   });
 
-  function saveAndRender() {
-    localStorage.setItem("goals", JSON.stringify(goals));
-    renderGoals();
-  }
-
   function resetGoalsAtMidnight() {
     const now = new Date();
     const midnight = new Date(now);
@@ -201,8 +169,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setTimeout(() => {
       goals = goals.map((goal) => ({ ...goal, completed: false }));
-      saveAndRender();
-      resetGoalsAtMidnight();
+      saveAndRender(); // Ensure UI updates and notification resets
+      resetGoalsAtMidnight(); // Set the next reset
     }, timeUntilMidnight);
   }
 
@@ -226,7 +194,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  loadMotivation();
   renderGoals();
   checkUser();
   resetGoalsAtMidnight();
