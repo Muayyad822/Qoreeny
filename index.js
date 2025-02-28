@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const goalInput = document.getElementById("goal-input");
   const addGoalBtn = document.getElementById("add-goal-btn");
   const goalsList = document.getElementById("goals-list");
-  const motivationalMessage = document.getElementById("motivation-text");
+  const errorDisplay = document.getElementById("error-display");
   const themeToggle = document.getElementById("theme-toggle");
   const body = document.body;
 
@@ -145,10 +145,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   addGoalBtn.addEventListener("click", () => {
     const text = goalInput.value.trim();
-    if (text) {
-      goals.push({ text, completed: false });
-      goalInput.value = "";
-      saveAndRender();
+    try {
+        if (text) {
+          goals.push({ text, completed: false });
+          goalInput.value = "";
+          saveAndRender();
+        } else {
+          throw new Error("Goal input cannot be empty");
+        }
+    } catch (error) {
+        errorDisplay.textContent = error.message;
+        setTimeout(() => {
+          errorDisplay.textContent = "";
+        }, 2000); 
     }
   });
 
