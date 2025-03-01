@@ -176,14 +176,36 @@ document.addEventListener("DOMContentLoaded", () => {
   function resetGoalsAtMidnight() {
     const now = new Date();
     const midnight = new Date(now);
-    midnight.setHours(24, 0, 0, 0);
+    midnight.setHours(24, 0, 0, 0); // Set to next midnight
     const timeUntilMidnight = midnight - now;
-
+  
+    // Set a timeout to run at the next midnight
     setTimeout(() => {
-      goals = goals.map((goal) => ({ ...goal, completed: false }));
-      saveAndRender(); // Ensure UI updates and notification resets
-      resetGoalsAtMidnight(); // Set the next reset
+      resetGoals(); // Reset goals and update UI
+      saveAndRender();
+  
+      // After the first run, set an interval to run every 24 hours
+      setInterval(() => {
+        resetGoals(); // Reset goals and update UI
+        saveAndRender();
+      }, 24 * 60 * 60 * 1000); // 24 hours in milliseconds
     }, timeUntilMidnight);
+  
+    // Handle cases where the tab becomes active after being inactive
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") {
+        const now = new Date();
+        if (now.getHours() === 0 && now.getMinutes() === 0) {
+          resetGoals(); // Reset goals and update UI
+          saveAndRender();
+        }
+      }
+    });
+  }
+  
+  // Helper function to reset goals
+  function resetGoals() {
+    goals = goals.map((goal) => ({ ...goal, completed: false }));
   }
 
   function checkUser() {
@@ -206,7 +228,33 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  function displayIslamicDate() {
+    const today = new Date();
+    const hijriDate = new Intl.DateTimeFormat("en-TN-u-ca-islamic", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(today);
+  
+    const hijriDay = new Intl.DateTimeFormat("en-TN-u-ca-islamic", {
+      day: "numeric",
+    }).format(today);
+  
+    const hijriMonth = new Intl.DateTimeFormat("en-TN-u-ca-islamic", {
+      month: "numeric",
+    }).format(today);
+  
+    // let ramadanDay = hijriMonth === "9" ? `Ramadan Day: ${hijriDay}` : "";
+  
+    document.getElementById("islamic-date").innerHTML = `
+      📅 ${hijriDate} 
+    `;
+  }
+  
+  
+
   renderGoals();
   checkUser();
+  displayIslamicDate();
   resetGoalsAtMidnight();
 });
