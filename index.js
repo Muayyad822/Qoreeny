@@ -230,25 +230,47 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function displayIslamicDate() {
     const today = new Date();
-    const hijriDate = new Intl.DateTimeFormat("en-TN-u-ca-islamic", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    }).format(today);
+    const hijriDate = new HijriDate(today);
   
-    const hijriDay = new Intl.DateTimeFormat("en-TN-u-ca-islamic", {
-      day: "numeric",
-    }).format(today);
+    const islamicDateStr = `${hijriDate.day} ${hijriDate.monthName} ${hijriDate.year} AH`;
   
-    const hijriMonth = new Intl.DateTimeFormat("en-TN-u-ca-islamic", {
-      month: "numeric",
-    }).format(today);
+    // let ramadanDay = hijriDate.month === 9 ? `🌙 Ramadan Day: ${hijriDate.day}` : "";
   
-    // let ramadanDay = hijriMonth === "9" ? `Ramadan Day: ${hijriDay}` : "";
+    document.getElementById("islamic-date").innerHTML = `📅 ${islamicDateStr} `;
+  }
   
-    document.getElementById("islamic-date").innerHTML = `
-      📅 ${hijriDate} 
-    `;
+  // Simple Hijri Date Conversion
+  class HijriDate {
+    constructor(gregorianDate) {
+      const { year, month, day } = this.gregorianToHijri(gregorianDate);
+      this.year = year;
+      this.month = month;
+      this.day = day;
+      this.monthName = this.getMonthName(month);
+    }
+  
+    gregorianToHijri(date) {
+      // Umm al-Qura Calendar approximation
+      let jd = Math.floor(date / 86400000) + 2440588; // Convert to Julian Day
+      let l = jd - 1948440 + 10632;
+      let n = Math.floor((l - 1) / 10631);
+      l = l - 10631 * n + 354;
+      let j = Math.floor((10985 - l) / 5316) * Math.floor((50 * l) / 17719) + Math.floor(l / 5670) * Math.floor((43 * l) / 15238);
+      l = l - Math.floor((30 - j) / 15) * Math.floor((17719 * j) / 50) - Math.floor(j / 16) * Math.floor((15238 * j) / 43) + 29;
+      let month = Math.floor((24 * l) / 709);
+      let day = l - Math.floor((709 * month) / 24);
+      let year = 30 * n + j - 30;
+      return { year, month, day };
+    }
+  
+    getMonthName(month) {
+      const months = [
+        "Muharram", "Safar", "Rabi' al-Awwal", "Rabi' al-Thani", 
+        "Jumada al-Awwal", "Jumada al-Thani", "Rajab", "Sha'ban", 
+        "Ramadan", "Shawwal", "Dhul Qa'dah", "Dhul Hijjah"
+      ];
+      return months[month - 1];
+    }
   }
   
   
