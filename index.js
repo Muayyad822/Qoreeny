@@ -194,45 +194,37 @@ document.addEventListener("DOMContentLoaded", () => {
     saveAndRender();
   });
 
+  function resetGoals() {
+    goals = []; // Clear all goals
+    localStorage.removeItem("goals"); // Remove saved goals from localStorage
+    localStorage.setItem("lastResetDate", new Date().toDateString()); // Store today's date
+    saveAndRender(); // Ensure UI updates immediately
+  }
+  
   function resetGoalsAtMidnight() {
     const now = new Date();
-    const midnight = new Date(now);
-    midnight.setHours(0, 0, 0, 0); // Correctly set to midnight
-    midnight.setDate(midnight.getDate() + 1); // Move to the next day
+    const todayStr = now.toDateString(); // Get today's date as a string
+    const lastResetDate = localStorage.getItem("lastResetDate");
   
+    // If the stored date is different from today, reset goals
+    if (lastResetDate !== todayStr) {
+      resetGoals();
+    }
+  
+    // Calculate time until midnight
+    const midnight = new Date();
+    midnight.setHours(24, 0, 0, 0); // Set to next midnight
     const timeUntilMidnight = midnight - now;
   
     // Schedule reset at next midnight
     setTimeout(() => {
       resetGoals();
-      saveAndRender();
-      setInterval(() => {
-        resetGoals();
-        saveAndRender();
-      }, 24 * 60 * 60 * 1000); // Every 24 hours
+      setInterval(resetGoals, 24 * 60 * 60 * 1000); // Repeat reset every 24 hours
     }, timeUntilMidnight);
-  
-    // Handle case where the user opens the page after midnight
-    let lastResetDay = now.getDate();
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible") {
-        const now = new Date();
-        if (now.getDate() !== lastResetDay) {
-          resetGoals();
-          saveAndRender();
-          lastResetDay = now.getDate();
-        }
-      }
-    });
   }
   
-  // Helper function to reset goals
-  function resetGoals() {
-    function resetGoals() {
-      goals = []; // Clear all goals
-      localStorage.removeItem("goals"); // Remove saved goals from localStorage
-    }
-  }
+  
+
   
 
   function checkUser() {
