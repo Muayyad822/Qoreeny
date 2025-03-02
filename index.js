@@ -257,7 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // let ramadanDay = hijriDate.month === 9 ? `🌙 Ramadan Day: ${hijriDate.day}` : "";
   
-    document.getElementById("islamic-date").innerHTML = `📅 ${islamicDateStr} `;
+    document.getElementById("islamic-date").innerHTML = ` ${islamicDateStr} `;
   }
   
   // Simple Hijri Date Conversion
