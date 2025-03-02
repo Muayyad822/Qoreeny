@@ -301,9 +301,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   
-
+  resetGoalsAtMidnight();
   renderGoals();
   checkUser();
   displayIslamicDate();
-  resetGoalsAtMidnight();
+  
 });
