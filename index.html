@@ -11,6 +11,7 @@
       type="text/css"
     />
     <link rel="shortcut icon" href="https://fav.farm/🌙" />
+    <link rel="stylesheet" href="style.css">
   </head>
   <body
     id="body"
@@ -24,19 +25,77 @@
     >
       🌞
     </button>
+
+    <!-- Sidebar Menu Button -->
     <!-- <button
       id="menu-toggle"
       class="btn btn-outline btn-xl text-2xl absolute top-6 left-8"
     >
-     ≡
+      ≡
     </button> -->
+
+    <!-- Sidebar -->
+    <div
+      id="sidebar"
+      class="fixed top-0 left-0 w-64 h-full bg-gray-800 text-white p-5 transform -translate-x-full transition-transform duration-300"
+    >
+      <h2 class="text-xl font-bold mb-4 text-center">Ramadan Tools</h2>
+
+      <button id="prayer-times-btn" class="btn btn-primary w-full my-2">
+         Solat Times
+      </button>
+      <button id="iftar-suhoor-btn" class="btn btn-secondary w-full my-2">
+         Iftar & Suhoor
+      </button>
+      <button id="quran-planner-btn" class="btn btn-accent w-full my-2">
+         Quran Planner
+      </button>
+      <button id="tasbih-counter-btn" class="btn btn-outline w-full my-2">
+         Tasbih Counter
+      </button>
+      <button id="islamic-date-btn" class="btn btn-outline w-full my-2">
+         Islamic Date
+      </button>
+      <button id="daily-reminder-btn" class="btn btn-outline w-full my-2">
+         Daily Reminder
+      </button>
+      <button id="habit-tracker-btn" class="btn btn-outline w-full my-2">
+         Habit Tracker
+      </button>
+      <button id="dua-collection-btn" class="btn btn-outline w-full my-2">
+         Dua Collection
+      </button>
+      <button id="zakat-calculator-btn" class="btn btn-outline w-full my-2">
+         Zakat Calculator
+      </button>
+      <button id="qibla-direction-btn" class="btn btn-outline w-full my-2">
+         Qibla Direction
+      </button>
+      <button id="iftar-reminder-btn" class="btn btn-outline w-full my-2">
+         Iftar Reminder
+      </button>
+      <button id="daily-goals-btn" class="btn btn-outline w-full my-2">
+         Daily Goals
+      </button>
+
+      <button
+        id="close-sidebar"
+        class="absolute top-4 right-4 text-2xl text-gray-300"
+      >
+        x
+      </button>
+
+      <p class="absolute bottom-5">
+        &copy <a href="https://x.com/MuizMuayyad">Muiz Muayyad 2025</a>
+      </p>
+    </div>
 
     <!-- Auth Container -->
     <div
       id="auth-container"
       class="max-w-md w-full bg-base-400 shadow-xl border rounded-xl p-6 outline outline-gray-500 text-center"
     >
-      <h1 class="text-3xl font-bold text-center ">
+      <h1 class="text-3xl font-bold text-center">
         🌙 <br />
         Ramadan Accountability Qoreen
       </h1>
@@ -60,13 +119,9 @@
       id="main-app"
       class="max-w-md w-full bg-base-400 shadow-xl border rounded-xl p-6 outline outline-gray-500 hidden"
     >
-     <!-- Date -->
-     <div id="islamic-date" class="mt-4 p-2 rounded-lg text-center">
-       
-     </div>
-      <h1
-        class="text-3xl font-bold text-center"
-      >
+      <!-- Date -->
+      <div id="islamic-date" class="mt-4 p-2 rounded-lg text-center"></div>
+      <h1 class="text-3xl font-bold text-center">
         🌙 <br />
         Ramadan Accountability Qoreen
       </h1>
@@ -74,8 +129,6 @@
         id="user-greeting"
         class="text-center text-lg mt-4 font-semibold"
       ></h2>
-
-     
 
       <p class="text-center m-2">Track your daily Ramadan goals:</p>
       <!-- Open Recommended Tasks -->
@@ -88,9 +141,9 @@
       <!-- Recommended Tasks Overlay -->
       <div
         id="recommended-overlay"
-        class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden"
+        class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden "
       >
-        <div class="bg-white text-black p-6 rounded-lg w-80">
+        <div class="bg-white text-black p-6 rounded-lg w-80 max-h-[80vh] overflow-y-auto">
           <h3 class="text-xl font-bold text-center mb-4">Recommended Tasks</h3>
           <ul id="recommended-list" class="space-y-2"></ul>
           <button id="close-recommended" class="btn btn-error mt-4 w-full">
@@ -111,7 +164,6 @@
           class="input input-bordered bg-gray-600 border-2 w-full p-2 text-black rounded-lg"
         />
         <button id="add-goal-btn" class="btn btn-success ml-2">➕</button>
-        
       </div>
       <p id="error-display" class="text-red-600 text-center mt-2"></p>
     </div>

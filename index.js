@@ -35,19 +35,40 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
 
+  // Menu functionalities
+  // const menuToggle = document.getElementById("menu-toggle");
+  // const sidebar = document.getElementById("sidebar");
+  // const closeSidebar = document.getElementById("close-sidebar");
+
+  // menuToggle.addEventListener("click", () => {
+  //   sidebar.classList.toggle("-translate-x-full");
+  // });
+
+  // closeSidebar.addEventListener("click", () => {
+  //   sidebar.classList.add("-translate-x-full");
+  // });
+
+// recommended tasks
   const recommendedTasks = [
     "Pray Taraweeh",
     "Give Sadaqah",
-    "Read one Juz of Quran",
-    "Make dua for loved ones",
-    "Help prepare Iftar",
+    "Read one Juz of the Quran",
+    "Make dua for loved ones after Salah",
+    "Help prepare Iftar for family or community",
     "Do Istighfar 100 times",
-    "Read about a Hadith",
-    "Perform Tahajjud",
-    "Avoid gossip for a day",
-    "Visit a sick person",
-    "Call family members",
-    "Reflect on a Quranic verse",
+    "Read and reflect a Hadith",
+    "Perform Tahajjud ",
+    "Avoid gossip and backbiting for the day",
+    "Visit a sick person or elderly relative",
+    "Call a family member you haven't spoken to in a while",
+    "Reflect on a Quranic verse and its meaning",
+    "Recite Surah Al-Mulk before sleeping",
+    "Donate to a local mosque or charity organization",
+    "Memorize a new Surah or Ayah from the Quran",
+    "Spend time in Dhikr (remembrance of Allah) daily",
+    "Feed a fasting person for Iftar",
+    "Avoid wasting time on social media",
+    "Pray for the Ummah",
   ];
 
   const openRecommended = document.getElementById("open-recommended");
