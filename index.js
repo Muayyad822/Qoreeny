@@ -228,7 +228,10 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // Helper function to reset goals
   function resetGoals() {
-    goals = goals.map((goal) => ({ ...goal, completed: false }));
+    function resetGoals() {
+      goals = []; // Clear all goals
+      localStorage.removeItem("goals"); // Remove saved goals from localStorage
+    }
   }
   
 
