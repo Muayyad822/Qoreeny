@@ -197,28 +197,30 @@ document.addEventListener("DOMContentLoaded", () => {
   function resetGoalsAtMidnight() {
     const now = new Date();
     const midnight = new Date(now);
-    midnight.setHours(24, 0, 0, 0); // Set to next midnight
+    midnight.setHours(0, 0, 0, 0); // Correctly set to midnight
+    midnight.setDate(midnight.getDate() + 1); // Move to the next day
+  
     const timeUntilMidnight = midnight - now;
   
-    // Set a timeout to run at the next midnight
+    // Schedule reset at next midnight
     setTimeout(() => {
-      resetGoals(); // Reset goals and update UI
+      resetGoals();
       saveAndRender();
-  
-      // After the first run, set an interval to run every 24 hours
       setInterval(() => {
-        resetGoals(); // Reset goals and update UI
+        resetGoals();
         saveAndRender();
-      }, 24 * 60 * 60 * 1000); // 24 hours in milliseconds
+      }, 24 * 60 * 60 * 1000); // Every 24 hours
     }, timeUntilMidnight);
   
-    // Handle cases where the tab becomes active after being inactive
+    // Handle case where the user opens the page after midnight
+    let lastResetDay = now.getDate();
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState === "visible") {
         const now = new Date();
-        if (now.getHours() === 0 && now.getMinutes() === 0) {
-          resetGoals(); // Reset goals and update UI
+        if (now.getDate() !== lastResetDay) {
+          resetGoals();
           saveAndRender();
+          lastResetDay = now.getDate();
         }
       }
     });
@@ -228,6 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function resetGoals() {
     goals = goals.map((goal) => ({ ...goal, completed: false }));
   }
+  
 
   function checkUser() {
     if (userName) {
