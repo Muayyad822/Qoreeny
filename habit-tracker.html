@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habit Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5.0.0-beta.9/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="shortcut icon" href="https://fav.farm/🌙" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#1e1e2e] m-6">
+    <div id="habit-tracker" class="p-6 bg-[#1e1e2e] rounded-lg shadow-white shadow-md">
+        <h2 class="text-xl font-bold mb-4 text-white">Habit Tracker</h2>
+        
+        <div class="overflow-auto">
+          <table class="w-full border-collapse text-white">
+            <thead>
+              <tr>
+                <th class="border p-2">Habit</th>
+                <th class="border p-2">Mon</th>
+                <th class="border p-2">Tue</th>
+                <th class="border p-2">Wed</th>
+                <th class="border p-2">Thu</th>
+                <th class="border p-2">Fri</th>
+                <th class="border p-2">Sat</th>
+                <th class="border p-2">Sun</th>
+              </tr>
+            </thead>
+            <tbody id="habit-list"></tbody>
+          </table>
+        </div>
+      </div>
+      
+</body>
+</html>
