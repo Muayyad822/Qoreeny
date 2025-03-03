@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quran Planner - Ramadan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {},
+        },
+        daisyui: {
+          themes: ["light", "dark"],
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-[#1e1e2e] flex flex-col items-center p-6 text-white">
+    <div
+      class="max-w-md w-full bg-base-400 shadow-xl border rounded-xl p-6 outline outline-gray-500 text-center"
+    >
+      <h1 class="text-2xl font-bold text-center">Quran Planner - Ramadan</h1>
+      <p class="text-center mt-2">Complete the Quran by the end of Ramadan</p>
+      <div class="mt-4 space-y-2">
+        <label class="block text-md">Total Days Left in Ramadan:</label>
+        <input
+          id="daysLeft"
+          type="number"
+          class="input input-bordered bg-gray-600 border-2 w-full p-2 text-white rounded-lg transition-all duration-300 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-300"
+          placeholder="Enter remaining days"
+        />
+        <label class="block text-md mt-2">Pages Already Read:</label>
+        <input
+          id="pagesRead"
+          type="number"
+          class="input input-bordered bg-gray-600 border-2 w-full p-2 mb-4 text-white rounded-lg transition-all duration-300 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-300"
+          placeholder="Enter pages read"
+        />
+        <button
+          class="btn btn-primary p-2 my-4 border rounded-xl hover:scale-105"
+          onclick="calculatePlan()"
+        >
+          Generate Plan
+        </button>
+        <button
+          class="btn btn-primary p-2 my-4 border rounded-xl hover:scale-105"
+          onclick="clearInputs()"
+        >
+          Clear
+        </button>
+      </div>
+      <div id="plan" class="mt-4"></div>
+    </div>
+    <a
+      href="index.html"
+      class="btn btn-outline m-8 inline-block text-center text-white hover:scale-105"
+      >Go Home</a
+    >
+    <script defer src="quran-planner.js"></script>
+  </body>
+</html>

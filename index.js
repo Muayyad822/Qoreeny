@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (Notification.permission === "granted") {
       const completedGoals = goals.filter((goal) => goal.completed).length;
       const remainingGoals = goals.length - completedGoals;
-  
+
       navigator.serviceWorker.ready.then((registration) => {
         registration.showNotification("Ramadan Goals Progress", {
           body: `✅ Completed: ${completedGoals}\n⏳ Remaining: ${remainingGoals}`,
@@ -33,22 +33,63 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   }
-  
 
   // Menu functionalities
-  // const menuToggle = document.getElementById("menu-toggle");
-  // const sidebar = document.getElementById("sidebar");
-  // const closeSidebar = document.getElementById("close-sidebar");
+  const menuToggle = document.getElementById("menu-toggle");
+  const sidebar = document.getElementById("sidebar");
+  const closeSidebar = document.getElementById("close-sidebar");
 
-  // menuToggle.addEventListener("click", () => {
-  //   sidebar.classList.toggle("-translate-x-full");
-  // });
+  menuToggle.addEventListener("click", () => {
+    sidebar.classList.toggle("-translate-x-full");
+  });
 
-  // closeSidebar.addEventListener("click", () => {
-  //   sidebar.classList.add("-translate-x-full");
-  // });
+  closeSidebar.addEventListener("click", () => {
+    sidebar.classList.add("-translate-x-full");
+  });
 
-// recommended tasks
+  const openArchive = document.getElementById("open-archive");
+  const archiveOverlay = document.getElementById("archive-overlay");
+  const archiveList = document.getElementById("archive-list");
+  const closeArchive = document.getElementById("close-archive");
+  const clearArchive = document.getElementById("clear-archive");
+
+  // Open archive modal
+  openArchive.addEventListener("click", () => {
+    archiveList.innerHTML = "";
+    const pastGoals = JSON.parse(localStorage.getItem("pastGoals")) || [];
+
+    if (pastGoals.length === 0) {
+      archiveList.innerHTML =
+        "<li class='text-center text-gray-500'>No past goals recorded.</li>";
+    } else {
+      pastGoals.forEach((entry) => {
+        const entryElement = document.createElement("li");
+        entryElement.className = "p-2 bg-gray-200 rounded-lg text-black mb-1";
+        entryElement.innerHTML = `<strong>${
+          entry.date
+        }:</strong> ${entry.completedGoals
+          .map((goal) => goal.text)
+          .join(", ")}`;
+        archiveList.appendChild(entryElement);
+      });
+    }
+
+    archiveOverlay.classList.remove("hidden");
+  });
+
+  // Close archive modal
+  closeArchive.addEventListener("click", () => {
+    archiveOverlay.classList.add("hidden");
+  });
+
+  // Clear archive
+  clearArchive.addEventListener("click", () => {
+    localStorage.removeItem("pastGoals");
+    archiveList.innerHTML =
+      "<li class='text-center text-gray-500'>No past goals recorded.</li>";
+  });
+
+  // recommended tasks
   const recommendedTasks = [
     "Pray Taraweeh",
     "Give Sadaqah",
@@ -121,7 +162,9 @@ document.addEventListener("DOMContentLoaded", () => {
   themeToggle.addEventListener("click", () => {
     const newTheme =
       body.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      body.classList.add("transition-colors", "duration-500");
     body.setAttribute("data-theme", newTheme);
+
     localStorage.setItem("theme", newTheme);
     themeToggle.textContent = newTheme === "dark" ? "🌞" : "🌙 ";
     updateThemeStyles(newTheme);
@@ -167,18 +210,18 @@ document.addEventListener("DOMContentLoaded", () => {
   addGoalBtn.addEventListener("click", () => {
     const text = goalInput.value.trim();
     try {
-        if (text) {
-          goals.push({ text, completed: false });
-          goalInput.value = "";
-          saveAndRender();
-        } else {
-          throw new Error("Goal input cannot be empty");
-        }
+      if (text) {
+        goals.push({ text, completed: false });
+        goalInput.value = "";
+        saveAndRender();
+      } else {
+        throw new Error("Goal input cannot be empty");
+      }
     } catch (error) {
-        errorDisplay.textContent = error.message;
-        setTimeout(() => {
-          errorDisplay.textContent = "";
-        }, 2000); 
+      errorDisplay.textContent = error.message;
+      setTimeout(() => {
+        errorDisplay.textContent = "";
+      }, 2000);
     }
   });
 
@@ -194,38 +237,48 @@ document.addEventListener("DOMContentLoaded", () => {
     saveAndRender();
   });
 
+  function notifyGoalsReset() {
+    if (Notification.permission === "granted") {
+      navigator.serviceWorker.ready.then((registration) => {
+        registration.showNotification("Daily Goals Reset", {
+          body: "Your Ramadan goals have been reset for a new day! ✨",
+          icon: "https://fav.farm/🌙",
+          badge: "https://fav.farm/🌙",
+          tag: "goal-reset",
+        });
+      });
+    }
+  }
+
   function resetGoals() {
     goals = []; // Clear all goals
     localStorage.removeItem("goals"); // Remove saved goals from localStorage
     localStorage.setItem("lastResetDate", new Date().toDateString()); // Store today's date
     saveAndRender(); // Ensure UI updates immediately
+    notifyGoalsReset(); //
   }
-  
+
   function resetGoalsAtMidnight() {
     const now = new Date();
     const todayStr = now.toDateString(); // Get today's date as a string
     const lastResetDate = localStorage.getItem("lastResetDate");
-  
+
     // If the stored date is different from today, reset goals
     if (lastResetDate !== todayStr) {
       resetGoals();
     }
-  
+
     // Calculate time until midnight
     const midnight = new Date();
     midnight.setHours(24, 0, 0, 0); // Set to next midnight
     const timeUntilMidnight = midnight - now;
-  
+
     // Schedule reset at next midnight
     setTimeout(() => {
       resetGoals();
       setInterval(resetGoals, 24 * 60 * 60 * 1000); // Repeat reset every 24 hours
     }, timeUntilMidnight);
   }
-  
-  
-
-  
 
   function checkUser() {
     if (userName) {
@@ -250,14 +303,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function displayIslamicDate() {
     const today = new Date();
     const hijriDate = new HijriDate(today);
-  
+
     const islamicDateStr = `${hijriDate.day} ${hijriDate.monthName} ${hijriDate.year} AH`;
-  
+
     // let ramadanDay = hijriDate.month === 9 ? `🌙 Ramadan Day: ${hijriDate.day}` : "";
-  
+
     document.getElementById("islamic-date").innerHTML = ` ${islamicDateStr} `;
   }
-  
+
   // Simple Hijri Date Conversion
   class HijriDate {
     constructor(gregorianDate) {
@@ -267,35 +320,48 @@ document.addEventListener("DOMContentLoaded", () => {
       this.day = day;
       this.monthName = this.getMonthName(month);
     }
-  
+
     gregorianToHijri(date) {
       // Umm al-Qura Calendar approximation
       let jd = Math.floor(date / 86400000) + 2440588; // Convert to Julian Day
       let l = jd - 1948440 + 10632;
       let n = Math.floor((l - 1) / 10631);
       l = l - 10631 * n + 354;
-      let j = Math.floor((10985 - l) / 5316) * Math.floor((50 * l) / 17719) + Math.floor(l / 5670) * Math.floor((43 * l) / 15238);
-      l = l - Math.floor((30 - j) / 15) * Math.floor((17719 * j) / 50) - Math.floor(j / 16) * Math.floor((15238 * j) / 43) + 29;
+      let j =
+        Math.floor((10985 - l) / 5316) * Math.floor((50 * l) / 17719) +
+        Math.floor(l / 5670) * Math.floor((43 * l) / 15238);
+      l =
+        l -
+        Math.floor((30 - j) / 15) * Math.floor((17719 * j) / 50) -
+        Math.floor(j / 16) * Math.floor((15238 * j) / 43) +
+        29;
       let month = Math.floor((24 * l) / 709);
       let day = l - Math.floor((709 * month) / 24);
       let year = 30 * n + j - 30;
       return { year, month, day };
     }
-  
+
     getMonthName(month) {
       const months = [
-        "Muharram", "Safar", "Rabi' al-Awwal", "Rabi' al-Thani", 
-        "Jumada al-Awwal", "Jumada al-Thani", "Rajab", "Sha'ban", 
-        "Ramadan", "Shawwal", "Dhul Qa'dah", "Dhul Hijjah"
+        "Muharram",
+        "Safar",
+        "Rabi' al-Awwal",
+        "Rabi' al-Thani",
+        "Jumada al-Awwal",
+        "Jumada al-Thani",
+        "Rajab",
+        "Sha'ban",
+        "Ramadan",
+        "Shawwal",
+        "Dhul Qa'dah",
+        "Dhul Hijjah",
       ];
       return months[month - 1];
     }
   }
-  
-  
+
   resetGoalsAtMidnight();
   renderGoals();
   checkUser();
   displayIslamicDate();
-  
 });
